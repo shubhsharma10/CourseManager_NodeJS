@@ -21,14 +21,6 @@ app.get('/', function (req, res) {
     res.send('Hello World, This is Shubham Sharma')
 });
 
-// var userModel = require('./models/user/user.model.server');
-// userModel.createUser({
-//     username: 'bob',
-//     password: 'bob'
-// });
+require('./services/user.service.server')(app);
 
-// userModel.findAllUsers()
-//     .then(function(users){
-//     console.log(users);
-// });
 app.listen(PORT);
