@@ -37,5 +37,5 @@ app.get('/', function (req, res) {
 });
 
 require('./services/user.service.server')(app);
-
+require('./services/section.service.server')(app);
 app.listen(PORT);
