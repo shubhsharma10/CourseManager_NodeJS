@@ -83,10 +83,16 @@ module.exports = function (app) {
         var password = req.body.password;
         userModel.findUserByCredentials(username,password)
             .then(function(user) {
-            console.log(user);
-            req.session['currentUser'] = user;
-            res.json(user);
-        });
+                if(user) {
+                    req.session['currentUser'] = user;
+                    res.json(user);
+                } else {
+                    res.sendStatus(401);
+                }
+            })
+            .catch(function(error){
+                console.log(error);
+            })
     }
 
     function logout(req,res) {
