@@ -17,6 +17,17 @@ module.exports = function (app) {
             })
     }
 
+    function findUserByUsername(req,res) {
+        var username = req.query.username;
+        userModel.findUserByUsername(username)
+            .then(function(user) {
+                res.json(user);
+            })
+            .catch(function (error) {
+                res.sendStatus(500).send(error);
+            });
+    }
+
     function profile(req, res) {
         console.log(req.session['currentUser']);
         res.send(req.session['currentUser']);
@@ -38,11 +49,26 @@ module.exports = function (app) {
 
     function createUser(req, res) {
         var user = req.body;
-        userModel.createUser(user)
-            .then(function (user) {
-                req.session['currentUser'] = user;
-                res.send(user);
+        userModel.findUserByUsername(user.username)
+            .then(function (result) {
+                if(result){
+                    console.log('Username already exists');
+                    res.sendStatus(422);
+                }
+                else{
+                    console.log('user not found');
+                    return userModel.createUser(user);
+                }
             })
+            .then(function(user) {
+                if(user) {
+                    req.session['currentUser'] = user;
+                    res.send(user);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     function findAllUsers(req, res) {
