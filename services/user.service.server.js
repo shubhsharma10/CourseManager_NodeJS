@@ -6,6 +6,7 @@ module.exports = function (app) {
     app.put('/api/profile', updateProfile);
     app.post('/api/login', login);
     app.post('/api/logout',logout);
+    app.get('/api/session',session);
 
     var userModel = require('../models/user/user.model.server');
 
@@ -28,8 +29,15 @@ module.exports = function (app) {
             });
     }
 
+    function session(req,res) {
+        if(req.session['currentUser']) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(204);
+        }
+    }
+
     function profile(req, res) {
-        console.log(req.session['currentUser']);
         res.send(req.session['currentUser']);
     }
 
