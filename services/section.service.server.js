@@ -74,7 +74,6 @@ module.exports = function (app) {
         sectionModel
             .incrementSectionSeat(sectionId)
             .then(function (result) {
-                console.log(result);
                 return enrollmentModel.enrollStudentInSection(enrollment)
             })
             .then(function (enrollment) {
@@ -94,7 +93,6 @@ module.exports = function (app) {
             sectionModel
                 .decrementSectionSeat(sectionId)
                 .then(function (result) {
-                    console.log(result);
                     return enrollmentModel.cancelStudentEnrollmentInSection(enrollment)
                 })
                 .then(function () {
