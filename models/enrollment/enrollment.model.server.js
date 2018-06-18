@@ -10,6 +10,10 @@ function enrollStudentInSection(enrollment) {
     return enrollmentModel.create(enrollment)
 }
 
+function cancelErollmentForAllInSection(sectionId) {
+    return enrollmentModel.deleteMany({section: sectionId});
+}
+
 function cancelStudentEnrollmentInSection(enrollment) {
     return enrollmentModel.findOne({section: enrollment.section, student: enrollment.student})
         .exec()
@@ -28,5 +32,6 @@ function findSectionsForStudent(studentId) {
 module.exports = {
     enrollStudentInSection: enrollStudentInSection,
     findSectionsForStudent: findSectionsForStudent,
-    cancelStudentEnrollmentInSection: cancelStudentEnrollmentInSection
+    cancelStudentEnrollmentInSection: cancelStudentEnrollmentInSection,
+    cancelErollmentForAllInSection: cancelErollmentForAllInSection
 };

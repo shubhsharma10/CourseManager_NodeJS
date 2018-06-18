@@ -36,13 +36,21 @@ module.exports = function (app) {
 
     function deleteSection(req,res) {
         var sectionId = req.params['sectionId'];
-        sectionModel.deleteSection(sectionId)
+        enrollmentModel
+            .cancelErollmentForAllInSection(sectionId)
+            .then(function(result) {
+                if(result) {
+                    return sectionModel.deleteSection(sectionId);
+                }
+                throw new Error('Cancel enrollments for all failed');
+            })
             .then(function () {
                 res.sendStatus(200);
             })
             .catch(function(error){
                 res.sendStatus(500).send(error);
             });
+
     }
 
     function findSectionsForCourse(req, res) {
