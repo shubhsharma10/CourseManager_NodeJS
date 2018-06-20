@@ -34,12 +34,20 @@ function updateUser(userId,user) {
             });
 }
 
+function deleteUser(userId) {
+    return userModel.findById(userId)
+        .exec()
+        .then(function (user) {
+            return user.remove();
+        });
+}
 function findAllUsers() {
     return userModel.find();
 }
 
 var api = {
     createUser: createUser,
+    deleteUser: deleteUser,
     findAllUsers: findAllUsers,
     findUserById: findUserById,
     updateUser: updateUser,

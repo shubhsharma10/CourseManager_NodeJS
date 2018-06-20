@@ -4,6 +4,7 @@ module.exports = function (app) {
     app.post('/api/user', createUser);
     app.get('/api/profile', profile);
     app.put('/api/profile', updateProfile);
+    app.delete('/api/profile', deleteProfile);
     app.post('/api/login', login);
     app.post('/api/logout',logout);
     app.get('/api/session',session);
@@ -39,6 +40,23 @@ module.exports = function (app) {
 
     function profile(req, res) {
         res.send(req.session['currentUser']);
+    }
+    
+    function deleteProfile(req,res) {
+        if(req.session['currentUser']) {
+            const user = req.session['currentSession'];
+            const userId = user._id;
+            userModel.deleteUser(userId)
+                .then(function (user) {
+                    res.json(user);
+                })
+                .catch(function (error) {
+                    res.sendStatus(500).send(error);
+                });
+        } else {
+            res.sendStatus(500);
+        }
+
     }
 
     function updateProfile(req,res) {
